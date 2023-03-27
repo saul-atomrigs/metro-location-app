@@ -23,8 +23,7 @@ Optional enum to select between Typography variants.
 ## Usage
 
 ```javascript
-// Replace import with relative path.
-import Text, {TextVariant} from 'app/component-library/components/Texts/Text';
+import Text, {TextVariant} from 'app/component-library/Text';
 
 <Text variant={TextVariant.HeadingSM}>{TEXT_LABEL}</Text>;
 ```
