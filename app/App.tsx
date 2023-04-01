@@ -4,6 +4,7 @@ import {colors} from 'styles/common';
 import Home from 'components/view/Home';
 import * as RNLocalize from 'react-native-localize';
 import {createIntl, createIntlCache} from '@formatjs/intl';
+import {RecoilRoot} from 'recoil';
 
 const translations = {
   kr: require('../locale/kr.json'),
@@ -49,10 +50,12 @@ function App(): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Home />
-      <Text>{translate('hello')}</Text>
-    </SafeAreaView>
+    <RecoilRoot>
+      <SafeAreaView style={backgroundStyle}>
+        <Home />
+        <Text>{translate('hello')}</Text>
+      </SafeAreaView>
+    </RecoilRoot>
   );
 }
 
