@@ -34,19 +34,23 @@ export const baseStyles: Record<string, ViewStyle> = {
  */
 export const fontStyles: Record<string, TextStyle> = {
   normal: {
-    fontFamily: 'EuclidCircularB-Regular',
+    fontFamily: 'Roboto-Regular',
     fontWeight: '400',
+    fontSize: 16,
   },
   light: {
-    fontFamily: 'EuclidCircularB-Regular',
+    fontFamily: 'Roboto-Regular',
     fontWeight: '300',
+    fontSize: 16,
   },
   thin: {
-    fontFamily: 'EuclidCircularB-Regular',
+    fontFamily: 'Roboto-Regular',
     fontWeight: '100',
+    fontSize: 16,
   },
   bold: {
-    fontFamily: 'EuclidCircularB-Bold',
+    fontFamily: 'Roboto-Bold',
     fontWeight: '600',
+    fontSize: 16,
   },
 };
