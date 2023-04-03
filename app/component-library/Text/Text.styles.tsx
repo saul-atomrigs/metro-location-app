@@ -1,12 +1,17 @@
-// Third party dependencies.
+/** 외부 라이브러리 */
 import {StyleSheet, TextStyle} from 'react-native';
+import Styled from 'styled-components/native';
 
-// External dependencies.
-// import {Theme} from '../../../../util/theme/models';
+/** 내부 라이브러리 */
 import {Theme} from 'util/theme/models';
+import {colors, fontStyles} from 'styles/common';
+import {TextColor} from 'component-library/Text/Text.types';
 
-// Internal dependencies.
-import {TextColor} from './Text.types';
+export const StyledText = Styled.Text`
+  font-family: ${fontStyles.bold.fontFamily};
+  font-size: ${fontStyles.bold.fontSize}px;
+  color: ${colors.white};
+`;
 
 /**
  * Style sheet function for Text component.

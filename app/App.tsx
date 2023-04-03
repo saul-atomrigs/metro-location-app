@@ -1,59 +1,40 @@
 import React from 'react';
-import {SafeAreaView, useColorScheme, I18nManager, Text} from 'react-native';
-import {colors} from 'styles/common';
+import {SafeAreaView, Text, useColorScheme} from 'react-native';
+import {RecoilRoot} from 'recoil';
+import Geolocation from 'react-native-geolocation-service';
+
 import Home from 'components/view/Home';
-import * as RNLocalize from 'react-native-localize';
-import {createIntl, createIntlCache} from '@formatjs/intl';
+import {colors} from 'styles/common';
+import {translate as t} from 'locale/';
+import {requestPermissions} from 'util/geolocation';
 
-const translations = {
-  kr: require('../locale/kr.json'),
-  en: require('../locale/en.json'),
-} as const;
-
-export type Translation = keyof typeof translations;
-
-// fallback if no available language fits
-const fallback = {languageTag: 'en', isRTL: false};
-
-const {languageTag, isRTL} =
-  RNLocalize.findBestAvailableLanguage(Object.keys(translations)) ?? fallback;
-
-// update layout direction
-I18nManager.forceRTL(isRTL);
-
-const intl = createIntl(
-  {
-    defaultLocale: 'en',
-    locale: languageTag,
-    messages: translations[languageTag as Translation],
-  },
-  createIntlCache(),
-);
-
-type TranslationParams = Parameters<(typeof intl)['formatMessage']>[1];
-
-const translate = (key: string, params?: TranslationParams) =>
-  intl
-    .formatMessage({id: key, defaultMessage: translations['en'][key]}, params)
-    .toString();
-
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  console.log(RNLocalize.getLocales());
-  console.log(translate('hello'));
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode
-      ? colors.blackTransparent
-      : colors.blackTransparent,
+    backgroundColor: isDarkMode ? colors.black : colors.white,
   };
 
+  React.useEffect(() => {
+    requestPermissions();
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Home />
-      <Text>{translate('hello')}</Text>
-    </SafeAreaView>
+    <RecoilRoot>
+      <SafeAreaView style={backgroundStyle}>
+        <Home />
+        <Text>{t('hello')}</Text>
+      </SafeAreaView>
+    </RecoilRoot>
   );
 }
-
-export default App;
