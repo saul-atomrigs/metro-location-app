@@ -20,6 +20,7 @@
     "react-native": "0.71.3",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-localize": "^2.2.6",
+    "react-native-nmap": "^0.0.66",
     "react-native-permissions": "^3.8.0",
     "recoil": "^0.7.7",
     "styled-components": "^5.3.9"
