@@ -48,6 +48,8 @@ target 'metro' do
     # Pods for testing
   end
 
+  pod 'NMapsMap','3.15.0'
+
   post_install do |installer|
     react_native_post_install(
       installer,
