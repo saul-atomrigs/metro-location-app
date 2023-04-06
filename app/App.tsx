@@ -8,7 +8,7 @@ import {colors} from 'styles/common';
 import {translate as t} from 'locale/';
 import {requestPermissions} from 'util/geolocation';
 
-export default function App(): JSX.Element {
+export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
