@@ -7,10 +7,12 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "start-reset-cache": "yarn start --reset-cache",
+    "pod": "cd ios && pod install && cd ..",
+    "pod_m1": "cd ios && arch -x86_64 pod install && cd ..",
+    "clear-derived-data": "rm -rf ~/Library/Developer/Xcode/DerivedData/*",
     "lint": "eslint .",
     "test": "jest",
-    "postinstall": "react-native setup-ios-permissions",
-    "pod-install": "cd ios && pod install && cd .. "
+    "postinstall": "react-native setup-ios-permissions"
   },
   "dependencies": {
     "@formatjs/intl": "^2.6.7",
