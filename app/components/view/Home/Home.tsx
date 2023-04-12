@@ -19,17 +19,16 @@ export default function Home() {
   const P2 = {latitude: 37.565383, longitude: 126.976292};
 
   return (
-    <TextContainer>
-      <CustomText>Ho</CustomText>
+    <>
       <NaverMapView
-        style={{width: '100%', height: '100%'}}
+        style={{width: '100%', height: '80%'}}
         showsMyLocationButton={true}
         center={{...P0, zoom: 16}}
-        onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-        onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
-        onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
+        onTouch={e => console.log('onTouch', JSON.stringify(e.nativeEvent))}
+        onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
+        onMapClick={e => console.log('onMapClick', JSON.stringify(e))}
       />
-    </TextContainer>
+    </>
   );
 }
 
