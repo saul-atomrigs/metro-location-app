@@ -33,7 +33,6 @@ export default function App() {
     <RecoilRoot>
       <SafeAreaView style={backgroundStyle}>
         <Home />
-        <Text>{t('hello')}</Text>
       </SafeAreaView>
     </RecoilRoot>
   );
