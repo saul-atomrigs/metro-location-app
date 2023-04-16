@@ -21,9 +21,14 @@ import ImportHeaven from 'screens/ImportHeaven'
     - 리액트 네이티브 위치 퍼미션 이슈 해결 (https://stackoverflow.com/questions/59892302/location-permission-not-granted-in-react-native)
     - 실기기에서 위치 실시간으로 반영되는지 백그라운드에서도 테스트
 
+- `react-native-config`활용하여 `.env` 환경변수 설정 (ios, android 상이함) - https://github.com/luggit/react-native-config - April 5, 2023
+    - [iOS 에러]: iOS에서만 환경 변수 못 읽어오는 이슈. 버전 reverted해서 임시적으로 해결 ([https://github.com/luggit/react-native-config/issues/737#issuecomment-1464954367](https://github.com/luggit/react-native-config/issues/737#issuecomment-1464954367)) April 16, 2023 -> 커밋: https://github.com/saul-atomrigs/metro-location-app/commit/94561207d995f2e8ae4b7c98cd535afd9f6202c3
+
 - 네이버지도 API 연동 (`react-native-naver-map`), 2023.04.04 ~ 05
     - RNNaverMapMarker을 UIManager가 찾지 못하는 이슈 해결 → node_modules 폴더와 yarn.lock 파일 삭제하고, ios 폴더로 이동해 pod deintegrate 후 다시 pod install(https://www.inflearn.com/questions/611165/rnnavermapmarker을-uimanager가-찾지-못하는-에러)
     - 리액트 네이티브에서 환경 변수 세팅하기 (react-native-config). iOS, Android 각각 설정 방식 다름. 2023.04.05
     - iOS에서 네이버 지도 셋업
     - Android에서 네이버 지도 셋업
         - [안드로이드 에러]: 라이브러리 추가 시 에러 (Build was configured to prefer settings repositories..)는 이 곳 (https://angelplayer.tistory.com/263) 에서 방법 2로 해결, 2023.04.05
+    - [ios, Android 공통 타입 에러]: NaverMapViewProps에 children이 없어서 NaverMapView 컴포넌트의 자식 컴포넌트를 넣으면 타입 에러 (No overload matches this call…) 뜨는 이슈.
+        https://github.com/QuadFlask/react-native-naver-map/pull/149 ← PR올라와 있지만, 아직 반영이 안 되어, 직접 node_modules 소스코드에 반영하여 patch package 하여 이슈 해결 April 16, 2023 -> 커밋: https://github.com/saul-atomrigs/metro-location-app/commit/af0ea303b12397ec98e97668574192bea2138df8
