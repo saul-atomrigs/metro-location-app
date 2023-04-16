@@ -3,7 +3,7 @@ import {SafeAreaView, Text, useColorScheme} from 'react-native';
 import {RecoilRoot} from 'recoil';
 import Geolocation from 'react-native-geolocation-service';
 
-import Home from 'components/view/Home';
+import Home from 'screens/Home';
 import {colors} from 'styles/common';
 import {translate as t} from 'locale/';
 import {requestPermissions} from 'util/geolocation';
