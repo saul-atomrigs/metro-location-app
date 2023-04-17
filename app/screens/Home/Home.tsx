@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {KeyboardAvoidingView, TextInput, Keyboard} from 'react-native';
 import Config from 'react-native-config';
 import NaverMapView, {
@@ -15,18 +16,31 @@ import styled from 'styled-components/native';
 import isIos from 'util/device';
 
 export default function Home() {
-  const P0 = {latitude: 37.564362, longitude: 126.977011};
+  const URL = `http://openapi.seoul.go.kr:8088/${Config.SEOUL_METRO_API_KEY}/json/subwayStationMaster/1/5/`;
+  const INITIAL_POSITION = {latitude: 37.570161, longitude: 126.982923};
+  console.log('URL', URL);
 
-  const getMetroData = async () => {
-    const URL = `http://openapi.seoul.go.kr:8088/${Config.SEOUL_METRO_API_KEY}/xml/subwayStationMaster/1/5/`;
-    const response = await fetch(URL);
-    console.log(response);
-    return response.json();
-  };
+  const [metroData, setMetroData] = useState();
+  const [P0, setP0] = useState(INITIAL_POSITION);
 
   useEffect(() => {
-    // getMetroData();
+    getMetroData();
   }, []);
+
+  const getMetroData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const rawData = response.data.subwayStationMaster.row;
+      setMetroData(rawData);
+      setP0({
+        latitude: Number(metroData[1].CRDNT_Y),
+        longitude: Number(metroData[1].CRDNT_X),
+      });
+      console.log(P0);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'}>
