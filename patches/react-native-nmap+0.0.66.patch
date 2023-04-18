@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-nmap/index.tsx b/node_modules/react-native-nmap/index.tsx
+index 84ae33e..dd5ea0d 100644
+--- a/node_modules/react-native-nmap/index.tsx
++++ b/node_modules/react-native-nmap/index.tsx
+@@ -119,6 +119,7 @@ export interface NaverMapViewProps {
+     stopGesturesEnabled?: boolean;
+     liteModeEnabled?: boolean;
+     useTextureView?: boolean;
++    children?: React.ReactNode
+ }
+ 
+ export default class NaverMapView extends Component<NaverMapViewProps, {}> {
