@@ -23,6 +23,10 @@ import ImportHeaven from 'screens/ImportHeaven'
 
 - `react-native-config`활용하여 `.env` 환경변수 설정 (ios, android 상이함) - https://github.com/luggit/react-native-config - April 5, 2023
     - [iOS 에러]: iOS에서만 환경 변수 못 읽어오는 이슈. 버전 reverted해서 임시적으로 해결 ([https://github.com/luggit/react-native-config/issues/737#issuecomment-1464954367](https://github.com/luggit/react-native-config/issues/737#issuecomment-1464954367)) April 16, 2023 -> 커밋: https://github.com/saul-atomrigs/metro-location-app/commit/94561207d995f2e8ae4b7c98cd535afd9f6202c3
+    - [Babel 에러]: `.plugins 0 may only be a two-tuple or three-tuple`
+    
+    April 18, 2023 결국 https://github.com/goatandsheep/react-native-dotenv 라이브러리로 대체 → Babel 설정 중 2개 이상의 `plugins` 설정 하는 법 배울 수 있었다([https://stackoverflow.com/questions/46937204/is-it-possible-to-use-more-than-one-babel-preset-in-a-project](https://stackoverflow.com/questions/46937204/is-it-possible-to-use-more-than-one-babel-preset-in-a-project)) 
+    → 바벨 설정 커밋 링크 (https://github.com/saul-atomrigs/metro-location-app/commit/ad8613d7e233f0af01c614e0421dfdee41f5110d)
 
 - 네이버지도 API 연동 (`react-native-naver-map`), 2023.04.04 ~ 05
     - RNNaverMapMarker을 UIManager가 찾지 못하는 이슈 해결 → node_modules 폴더와 yarn.lock 파일 삭제하고, ios 폴더로 이동해 pod deintegrate 후 다시 pod install(https://www.inflearn.com/questions/611165/rnnavermapmarker을-uimanager가-찾지-못하는-에러)
