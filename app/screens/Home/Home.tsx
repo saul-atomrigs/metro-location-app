@@ -14,12 +14,13 @@ import NaverMapView, {
 import styled from 'styled-components/native';
 
 import isIos from 'util/device';
+import {MetroDataProps} from './Home.types';
 
 export default function Home() {
   const URL = `http://openapi.seoul.go.kr:8088/${SEOUL_METRO_API_KEY}/json/subwayStationMaster/1/5/`;
   const INITIAL_POSITION = {latitude: 37.570161, longitude: 126.982923};
 
-  const [metroData, setMetroData] = useState([]);
+  const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
   const [P0, setP0] = useState(INITIAL_POSITION);
 
   useEffect(() => {
@@ -32,8 +33,8 @@ export default function Home() {
       const metroRowData = response.data.subwayStationMaster.row;
       setMetroData(metroRowData);
       setP0({
-        latitude: Number(metroData[3].CRDNT_Y),
-        longitude: Number(metroData[3].CRDNT_X),
+        latitude: Number(metroData[1].CRDNT_Y),
+        longitude: Number(metroData[1].CRDNT_X),
       });
     } catch (error) {
       console.log('error', error);
