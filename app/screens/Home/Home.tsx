@@ -21,22 +21,22 @@ export default function Home() {
   const [P0, setP0] = useState(INITIAL_POSITION);
 
   useEffect(() => {
-    getMetroData();
-  }, []);
+    const getMetroData = async () => {
+      try {
+        const response = await axios.get(URL);
+        const metroRowData = response.data.subwayStationMaster.row;
+        setMetroData(metroRowData);
+        setP0({
+          latitude: Number(metroData[1].CRDNT_Y),
+          longitude: Number(metroData[1].CRDNT_X),
+        });
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
 
-  const getMetroData = async () => {
-    try {
-      const response = await axios.get(URL);
-      const metroRowData = response.data.subwayStationMaster.row;
-      setMetroData(metroRowData);
-      setP0({
-        latitude: Number(metroData[1].CRDNT_Y),
-        longitude: Number(metroData[1].CRDNT_X),
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
+    getMetroData();
+  }, [metroData]);
 
   return (
     <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'}>
