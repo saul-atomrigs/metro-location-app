@@ -17,6 +17,7 @@ import {MetroDataProps, MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
 import {useForm, Controller} from 'react-hook-form';
 import Text from 'component-library/Text';
+import SearchResultsList from 'components/SearchResultsList';
 
 export default function Home() {
   const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
@@ -38,6 +39,7 @@ export default function Home() {
     try {
       const response = await axios.get(URL);
       const metroRowData = response.data.subwayStationMaster.row;
+      // console.log('metroData', metroRowData);
       setMetroData(metroRowData);
       const filteredData = metroRowData.filter(
         (item: MetroRowData) => item.STATN_NM === data.searchResult,
@@ -50,6 +52,8 @@ export default function Home() {
       console.log('error', error);
     }
   };
+
+  const MOCK_DATA = ['서울역', '시청역', '종각역'];
 
   return (
     <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'}>
@@ -79,6 +83,7 @@ export default function Home() {
       />
       {errors.searchResult && <Text>This is required.</Text>}
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      {/* <SearchResultsList results={MOCK_DATA} /> */}
     </KeyboardAvoidingView>
   );
 }
