@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {KeyboardAvoidingView, TextInput, Keyboard} from 'react-native';
+import {KeyboardAvoidingView, TextInput, Keyboard, Button} from 'react-native';
 import NaverMapView, {
   Circle,
   Marker,
@@ -13,30 +13,47 @@ import NaverMapView, {
 import styled from 'styled-components/native';
 
 import isIos from 'util/device';
-import {MetroDataProps} from './Home.types';
+import {MetroDataProps, MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
+import {useForm, Controller} from 'react-hook-form';
+import Text from 'component-library/Text';
+import SearchResultsList from 'components/SearchResultsList';
 
 export default function Home() {
   const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
   const [P0, setP0] = useState(INITIAL_POSITION);
 
-  useEffect(() => {
-    const getMetroData = async () => {
-      try {
-        const response = await axios.get(URL);
-        const metroRowData = response.data.subwayStationMaster.row;
-        setMetroData(metroRowData);
-        setP0({
-          latitude: Number(metroData[1].CRDNT_Y),
-          longitude: Number(metroData[1].CRDNT_X),
-        });
-      } catch (error) {
-        console.log('error', error);
-      }
-    };
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      searchResult: '',
+    },
+  });
 
-    getMetroData();
-  }, [metroData]);
+  const onSubmit = (data: SearchResult) => getMetroData(data);
+
+  const getMetroData = async (data: SearchResult) => {
+    try {
+      const response = await axios.get(URL);
+      const metroRowData = response.data.subwayStationMaster.row;
+      // console.log('metroData', metroRowData);
+      setMetroData(metroRowData);
+      const filteredData = metroRowData.filter(
+        (item: MetroRowData) => item.STATN_NM === data.searchResult,
+      );
+      setP0({
+        latitude: Number(filteredData[0].CRDNT_Y),
+        longitude: Number(filteredData[0].CRDNT_X),
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const MOCK_DATA = ['서울역', '시청역', '종각역'];
 
   return (
     <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'}>
@@ -49,14 +66,24 @@ export default function Home() {
         onMapClick={() => Keyboard.dismiss()}>
         <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
       </NaverMapView>
-      <TextInput
-        style={{width: '80%', height: '10%'}}
-        placeholder="하차할 지하철역을 입력해주세요."
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <TextInput
+            placeholder="하차하실 역을 입력해주세요."
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="searchResult"
       />
+      {errors.searchResult && <Text>This is required.</Text>}
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      {/* <SearchResultsList results={MOCK_DATA} /> */}
     </KeyboardAvoidingView>
   );
 }
-
-const TextContainer = styled.View`
-  background-color: #333;
-`;
