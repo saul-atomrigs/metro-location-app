@@ -24,23 +24,17 @@ import {requestPermissions} from 'util/geolocation';
 import isIos from 'util/device';
 
 export default function Home() {
-  const P0State = atom({
-    key: 'P0Atom',
-    default: INITIAL_POSITION,
-  });
-
   /** 지하철역 좌표 */
   const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
-  const [P0, setP0] = useRecoilState(P0State);
-  console.log('P0 position--', P0.latitude);
-  console.log('P0 position--', P0.longitude);
+  const [P0, setP0] = useState(INITIAL_POSITION);
+  // console.log('1. P0 position--', P0.latitude);
+  // console.log('1. P0 position--', P0.longitude);
 
   /** 유저의 현재 Geolocation 좌표 */
   const [currentPosition, setCurrentPosition] = useState<any>({});
-  const coords = currentPosition.coords;
-  const {latitude, longitude} = coords;
-  console.log('current position', latitude);
-  console.log('current position', longitude);
+  const {latitude, longitude} = currentPosition?.coords || {};
+  // console.log('2. current position', latitude);
+  // console.log('2. current position', longitude);
 
   useEffect(() => {
     requestPermissions();
@@ -67,8 +61,14 @@ export default function Home() {
 
   /** CONDITIONS */
   const isTargetedStation =
-    P0.latitude === latitude && P0.longitude === longitude;
-  console.log('isTargetedStation ---', isTargetedStation);
+    Math.abs(P0.latitude - latitude) < 0.005 &&
+    Math.abs(P0.longitude - longitude) < 0.005;
+
+  useEffect(() => {
+    if (isTargetedStation) {
+      onDisplayNotification();
+    }
+  }, [isTargetedStation]);
 
   /** HANDLERS */
 
@@ -131,7 +131,6 @@ export default function Home() {
         showsMyLocationButton={true}
         center={{...P0, zoom: 16}}
         onTouch={() => {}}
-        // onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
         onMapClick={() => Keyboard.dismiss()}>
         <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
       </NaverMapView>
