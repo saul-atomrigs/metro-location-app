@@ -40,6 +40,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = metro/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = metro/main.m; sourceTree = "<group>"; };
 		1709DAB288B4E75DECC84D4A /* Pods-metro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-metro.release.xcconfig"; path = "Target Support Files/Pods-metro/Pods-metro.release.xcconfig"; sourceTree = "<group>"; };
+		43721D4C29F8E03100A596A2 /* metro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = metro.entitlements; path = metro/metro.entitlements; sourceTree = "<group>"; };
 		43CC69A629DD69EF00BFE61D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		43FB075929D8428A0049BC6C /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		43FB075B29DA6D320049BC6C /* metro-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "metro-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		13B07FAE1A68108700A75B9A /* metro */ = {
 			isa = PBXGroup;
 			children = (
+				43721D4C29F8E03100A596A2 /* metro.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -500,6 +502,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = metro/metro.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A3NZ94JF5N;
 				ENABLE_BITCODE = NO;
@@ -529,6 +532,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = metro/metro.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A3NZ94JF5N;
 				INFOPLIST_FILE = metro/Info.plist;
