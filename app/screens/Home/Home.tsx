@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {KeyboardAvoidingView, TextInput, Keyboard, Button} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  Keyboard,
+  Button,
+} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {
   Circle,
@@ -18,7 +24,7 @@ import notifee, {AndroidImportance} from '@notifee/react-native';
 
 import {MetroDataProps, MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
-import Text from 'component-library/Text';
+// import Text from 'component-library/Text';
 import SearchResultsList from 'components/SearchResultsList';
 import {requestPermissions} from 'util/geolocation';
 import isIos from 'util/device';
@@ -31,21 +37,27 @@ export default function Home() {
   // console.log('1. P0 position--', P0.longitude);
 
   /** 유저의 현재 Geolocation 좌표 */
-  const [currentPosition, setCurrentPosition] = useState<any>({});
+  const [currentPosition, setCurrentPosition] = useState<any>({
+    coords: {
+      latitude: 0,
+      longitude: 0,
+    },
+  });
   const {latitude, longitude} = currentPosition?.coords || {};
   // console.log('2. current position', latitude);
   // console.log('2. current position', longitude);
 
   useEffect(() => {
     requestPermissions();
-    Geolocation.getCurrentPosition(
+    Geolocation.watchPosition(
       position => {
         setCurrentPosition(position);
       },
       error => {
         console.log(error.code, error.message);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      // {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {enableHighAccuracy: true, interval: 1000, distanceFilter: 1},
     );
   }, []);
 
@@ -63,6 +75,8 @@ export default function Home() {
   const isTargetedStation =
     Math.abs(P0.latitude - latitude) < 0.005 &&
     Math.abs(P0.longitude - longitude) < 0.005;
+
+  console.log('isTargetedStation', isTargetedStation);
 
   useEffect(() => {
     if (isTargetedStation) {
@@ -126,14 +140,41 @@ export default function Home() {
         title="Display Notification"
         onPress={() => onDisplayNotification()}
       />
+      <Button
+        title="map center"
+        onPress={() =>
+          Geolocation.getCurrentPosition(position => {
+            setCurrentPosition(position);
+          })
+        }
+      />
       <NaverMapView
-        style={{width: '100%', height: '80%'}}
-        showsMyLocationButton={true}
-        center={{...P0, zoom: 16}}
+        style={{width: '100%', height: '70%'}}
+        showsMyLocationButton={false}
+        center={{
+          // latitude,
+          // longitude,
+          ...P0,
+          zoom: 16,
+        }}
+        // 해당하는 좌표로 화면을 이동:
+        // animateToCoordinate={{
+        //   latitude,
+        //   longitude,
+        // }}
         onTouch={() => {}}
         onMapClick={() => Keyboard.dismiss()}>
-        <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
+        <Marker
+          coordinate={
+            // latitude,
+            // longitude,
+            P0
+          }
+          onClick={() => console.warn('onClick! p0')}
+        />
       </NaverMapView>
+      <Text>{latitude}</Text>
+      <Text>{longitude}</Text>
       <Controller
         control={control}
         rules={{
