@@ -7,6 +7,7 @@ import {
   TextInput,
   Keyboard,
   Button,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import NaverMapView, {
@@ -33,8 +34,6 @@ export default function Home() {
   /** 지하철역 좌표 */
   const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
   const [P0, setP0] = useState(INITIAL_POSITION);
-  // console.log('1. P0 position--', P0.latitude);
-  // console.log('1. P0 position--', P0.longitude);
 
   /** 유저의 현재 Geolocation 좌표 */
   const [currentPosition, setCurrentPosition] = useState<any>({
@@ -44,8 +43,6 @@ export default function Home() {
     },
   });
   const {latitude, longitude} = currentPosition?.coords || {};
-  // console.log('2. current position', latitude);
-  // console.log('2. current position', longitude);
 
   useEffect(() => {
     requestPermissions();
@@ -105,6 +102,7 @@ export default function Home() {
     }
   };
 
+  /** NOTIFEE 알람 (FOREGROUND SERVICE) */
   const onDisplayNotification = async () => {
     try {
       // (required for iOS)
@@ -119,17 +117,34 @@ export default function Home() {
 
       await notifee.displayNotification({
         title: '지하철 앱',
-        body: '이번 역에서 내리세요!',
+        body: '내리세요 서비스를 시작합니다!',
         android: {
           channelId,
+          asForegroundService: true, // registerForegroundService에서 등록한 runner에 bound됨
           pressAction: {
             id: 'default',
           },
         },
       });
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Alert.alert('error', error);
     }
+  };
+
+  /** FOREGROUND SERVICE 멈춤: */
+  const stopForegroundService = async () => {
+    try {
+      await notifee.stopForegroundService();
+    } catch (error: any) {
+      Alert.alert('error', error);
+    }
+  };
+
+  /** 백그라운드일 때 이벤트 */
+  const onBackgroundEvent = () => {
+    notifee.onBackgroundEvent(async => {
+      console.log('onBackgroundEvent start in background');
+    });
   };
 
   /** UI */
@@ -141,15 +156,17 @@ export default function Home() {
         onPress={() => onDisplayNotification()}
       />
       <Button
-        title="map center"
+        title="getCurrentPosition"
         onPress={() =>
           Geolocation.getCurrentPosition(position => {
             setCurrentPosition(position);
           })
         }
       />
+      <Button title="stopForegroundService" onPress={stopForegroundService} />
+      <Button title="onBackgroundEvent" onPress={onBackgroundEvent} />
       <NaverMapView
-        style={{width: '100%', height: '70%'}}
+        style={{width: '100%', height: '60%'}}
         showsMyLocationButton={false}
         center={{
           // latitude,
@@ -192,6 +209,8 @@ export default function Home() {
       />
       {errors.searchResult && <Text>This is required.</Text>}
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Text>{P0.latitude}</Text>
+      <Text>{P0.longitude}</Text>
     </KeyboardAvoidingView>
   );
 }
