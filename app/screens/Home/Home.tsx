@@ -53,11 +53,11 @@ export default function Home() {
       error => {
         console.log(error.code, error.message);
       },
-      // {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       {enableHighAccuracy: true, interval: 1000, distanceFilter: 1},
     );
   }, []);
 
+  /** REACT-HOOK-FORM */
   const {
     control,
     handleSubmit,
@@ -116,8 +116,9 @@ export default function Home() {
       });
 
       await notifee.displayNotification({
+        id: '123',
         title: '지하철 앱',
-        body: '내리세요 서비스를 시작합니다!',
+        body: '내리세요 서비스를 시작합니다',
         android: {
           channelId,
           asForegroundService: true, // registerForegroundService에서 등록한 runner에 bound됨
@@ -131,6 +132,37 @@ export default function Home() {
     }
   };
 
+  // const onUpdateNotification = async () => {
+  //   try {
+  //     // (required for Android)
+  //     const channelId = await notifee.createChannel({
+  //       id: 'default',
+  //       name: 'Default Channel',
+  //       importance: AndroidImportance.HIGH,
+  //     });
+
+  //     await notifee.displayNotification({
+  //       id: '123',
+  //       title: '지하철 앱',
+  //       body: '이번 역에서 내리세요',
+  //       android: {
+  //         channelId,
+  //         asForegroundService: true, // registerForegroundService에서 등록한 runner에 bound됨
+  //         // open the app when pressed
+  //         pressAction: {
+  //           id: 'default',
+  //         },
+  //       },
+  //     });
+  //   } catch (error: any) {
+  //     Alert.alert('error', error);
+  //   }
+  // };
+
+  // if (isTargetedStation) {
+  //   onUpdateNotification();
+  // }
+
   /** FOREGROUND SERVICE 멈춤: */
   const stopForegroundService = async () => {
     try {
@@ -142,10 +174,45 @@ export default function Home() {
 
   /** 백그라운드일 때 이벤트 */
   const onBackgroundEvent = () => {
-    notifee.onBackgroundEvent(async => {
+    notifee.onBackgroundEvent(async () => {
       console.log('onBackgroundEvent start in background');
     });
   };
+
+  notifee.registerForegroundService(() => {
+    return new Promise(async () => {
+      Geolocation.watchPosition(async position => {
+        let currentLatitude = position.coords.latitude;
+        let currentLongitude = position.coords.longitude;
+        if (
+          // Math.abs(currentLatitude - 37.571449) < 0.005 &&
+          // Math.abs(currentLongitude - 126.73578) < 0.005
+          isTargetedStation
+        ) {
+          const channelId = await notifee.createChannel({
+            id: 'default',
+            name: 'Default Channel',
+            importance: AndroidImportance.HIGH,
+          });
+
+          notifee.displayNotification({
+            id: '123',
+            title: '지하철 앱',
+            body: '이번 역에서 내리세요',
+            android: {
+              channelId,
+              asForegroundService: true, // registerForegroundService에서 등록한 runner에 bound됨
+              pressAction: {
+                id: 'default',
+              },
+            },
+          });
+
+          await notifee.stopForegroundService();
+        }
+      });
+    });
+  });
 
   /** UI */
 
