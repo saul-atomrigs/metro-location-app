@@ -36,38 +36,37 @@ import ImportHeaven from 'screens/ImportHeaven'
         - [안드로이드 에러]: 라이브러리 추가 시 에러 (Build was configured to prefer settings repositories..)는 이 곳 (https://angelplayer.tistory.com/263) 에서 방법 2로 해결, 2023.04.05
     - [ios, Android 공통 타입 에러]: NaverMapViewProps에 children이 없어서 NaverMapView 컴포넌트의 자식 컴포넌트를 넣으면 타입 에러 (No overload matches this call…) 뜨는 이슈.
         https://github.com/QuadFlask/react-native-naver-map/pull/149 ← PR올라와 있지만, 아직 반영이 안 되어, 직접 node_modules 소스코드에 반영하여 patch package 하여 이슈 해결 April 16, 2023 -> 커밋: https://github.com/saul-atomrigs/metro-location-app/commit/af0ea303b12397ec98e97668574192bea2138df8
-        
--  백그라운드에서도 실시간 geolocation 받아오기
-    - [https://rob-coding.tistory.com/1](https://rob-coding.tistory.com/11)
-    - https://github.com/Agontuk/react-native-geolocation-service/issues/352#issuecomment-1221372193
-    - `Geolocation` 패키지의 `watchPosition` 메소드를 `notifee.registerForegroundService` 안에 추가. (`index.tsx` )May 19, 2023
-        
-        ```tsx
-        // android
-        notifee.registerForegroundService(() => {
-          let currentLatitude = '';
-          let currentLongitude = '';
-          Geolocation.watchPosition(position => {
-            console.log('got position', position);
-            currentLatitude = position.coords.latitude;
-            currentLongitude = position.coords.longitude;
+ 
+- 포그라운드, 백그라운드 알림 (notification)
+     - [Local notification vs Push (remote) notification]
+        - local: 앱 자체에서 띄움. 예) 시간, 장소, 스케쥴 등에 따라 알림 등 ← metro-location-app에 더 적합
+            - Notifee [https://velog.io/@2ast/React-Native-local-push-notification-셋팅하기-feat-notifee](https://velog.io/@2ast/React-Native-local-push-notification-%EC%85%8B%ED%8C%85%ED%95%98%EA%B8%B0-feat-notifee) April 27, 2023 안드로이드 알림이 오긴 하지만, 팝업 형식으로 하려면?
+        - push: 외부 서버에서 띄움. 예) 실시간 안내, abandoned cart 알림 등
+    - `Geolocation` 패키지의 `watchPosition` 메소드를 `notifee.registerForegroundService` 안에 추가. May 19, 2023
+    
+    ```tsx
+    notifee.registerForegroundService(() => {
+      let currentLatitude = '';
+      let currentLongitude = '';
+      Geolocation.watchPosition(position => {
+        currentLatitude = position.coords.latitude;
+        currentLongitude = position.coords.longitude;
+      });
+      return new Promise(() => {
+        if (
+          Math.abs(currentLatitude - P0.latitude) < 0.005 &&
+          Math.abs(currentLongitude - P0.longitude) < 0.005
+        ) {
+          notifee.displayNotification({
+            title: 'Foreground Service',
+            body: '이번 역에서 내리세요',
+            android: {
+              channelId: 'default',
+            },
           });
-          return new Promise(() => {
-            if (
-              Math.abs(currentLatitude - P0.latitude) < 0.005 &&
-              Math.abs(currentLongitude - P0.longitude) < 0.005
-              //   true
-            ) {
-              notifee.displayNotification({
-                title: 'Foreground Service',
-                body: '이번 역에서 내리세요',
-                android: {
-                  channelId: 'default',
-                },
-              });
-            }
-          });
-        });
-        ```
-        
+        }
+      });
+    });
+    ```
+    
     - 좌표데이터는 `number` 타입인데, 습관적으로 `let 변수명 = ''` 으로 초기화해서 (즉, `string` 타입으로) 오류 발생 May 25, 2023
