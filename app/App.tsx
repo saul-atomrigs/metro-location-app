@@ -10,6 +10,7 @@ export default function App() {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? colors.black : colors.white,
+    flex: 1,
   };
 
   return (
