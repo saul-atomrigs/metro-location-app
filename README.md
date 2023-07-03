@@ -1,10 +1,12 @@
 # metro-location-app
 
 ## 기획 의도
-지하철 타고 가다가 내려야되는 역을 듣지 못하고 지나쳐버린 개인 경험에서 비롯하여 이를 해결해줄 앱을 만들기로 결심하였습니다.
+지하철 타고 가다가 내려야되는 역을 듣지 못하고 지나쳐버린 개인 경험에서 비롯하여 이를 해결해줄 앱을 만들기로 결심하였습니다. 
+
+본 앱은 유저 기기의 geolocation 데이터를 실시간으로 추적하여 background 상태일 때도 내릴 역에 도착하면 알림을 띄워줍니다.
 
 ## 주요 개발 포인트 (이슈, 버그, 개선)
-- 절대경로 세팅, 2023.03.15 (커밋: https://github.com/saul-atomrigs/metro-location-app/commit/071a4dd0acd691baccdd73c14f2e8dc08683489f)
+- 절대경로 세팅, 2023.03.15 (커밋: https://github.com/saul-atomrigs/metro-location-app/commit/071a4dd0acd691baccdd73c14f2e8dc08683489f):
 ```
 // 상대경로 예시:
 import ImportHell from '../../../../../src/screens/ImportHell'
@@ -42,7 +44,7 @@ import ImportHeaven from 'screens/ImportHeaven'
         - local: 앱 자체에서 띄움. 예) 시간, 장소, 스케쥴 등에 따라 알림 등 ← metro-location-app에 더 적합
             - Notifee [https://velog.io/@2ast/React-Native-local-push-notification-셋팅하기-feat-notifee](https://velog.io/@2ast/React-Native-local-push-notification-%EC%85%8B%ED%8C%85%ED%95%98%EA%B8%B0-feat-notifee) April 27, 2023 안드로이드 알림이 오긴 하지만, 팝업 형식으로 하려면?
         - push: 외부 서버에서 띄움. 예) 실시간 안내, abandoned cart 알림 등
-    - `Geolocation` 패키지의 `watchPosition` 메소드를 `notifee.registerForegroundService` 안에 추가. May 19, 2023
+    - `Geolocation` 패키지의 `watchPosition` 메소드를 `notifee.registerForegroundService` 안에 추가. May 19, 2023:
     
     ```tsx
     notifee.registerForegroundService(() => {
