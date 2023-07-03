@@ -3,8 +3,8 @@
 ## 기획 의도
 지하철 타고 가다가 내려야되는 역을 듣지 못하고 지나쳐버린 개인 경험에서 비롯하여 이를 해결해줄 앱을 만들기로 결심하였습니다.
 
-## 주요 개발 포인트
-- 절대경로 세팅, 2023.03.15
+## 주요 개발 포인트 (이슈, 버그, 개선)
+- 절대경로 세팅, 2023.03.15 (커밋: https://github.com/saul-atomrigs/metro-location-app/commit/071a4dd0acd691baccdd73c14f2e8dc08683489f)
 ```
 // 상대경로 예시:
 import ImportHell from '../../../../../src/screens/ImportHell'
@@ -13,9 +13,9 @@ import ImportHell from '../../../../../src/screens/ImportHell'
 import ImportHeaven from 'screens/ImportHeaven'
 ```
 
-- `locale` 설정 (react-native-localize), 2023.03.17
+- `locale` 설정 (`react-native-localize`), 2023.03.17 (커밋: https://github.com/saul-atomrigs/metro-location-app/commit/8826ecdfba7458bedfa17430ba7c1d7ac838b5d9)
 
-- 커스텀 폰트 적용, 2023.04.02
+- 커스텀 폰트 적용, 2023.04.02 (커밋: https://github.com/saul-atomrigs/metro-location-app/commit/bc7fa6972b1f0d3aae658c3477f7f8c48f777ea5)
 
 - `react-native-geolocation-service` 라이브러리를 활용하여 유저의 현재 위치 파악 기능 추가, 2023.04.03
     - 리액트 네이티브 위치 퍼미션 이슈 해결 (https://stackoverflow.com/questions/59892302/location-permission-not-granted-in-react-native)
