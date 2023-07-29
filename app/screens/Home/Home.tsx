@@ -6,30 +6,24 @@ import {
   Text,
   TextInput,
   Keyboard,
-  Button,
-  Alert,
+  NativeModules,
+  Platform,
 } from 'react-native';
 import axios from 'axios';
-import NaverMapView, {
-  Circle,
-  Marker,
-  Path,
-  Polyline,
-  Polygon,
-} from 'react-native-nmap';
+import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import {useForm, Controller} from 'react-hook-form';
 import Geolocation from 'react-native-geolocation-service';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
-import {MetroDataProps, MetroRowData, SearchResult} from './Home.types';
+import {MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
 import {requestPermissions} from 'util/geolocation';
-import isIos from 'util/device';
+import SearchResultsList from 'components/SearchResultsList';
 
 export default function Home() {
   /** 유저의 현재 Geolocation 좌표 */
-  const [currentPosition, setCurrentPosition] = useState<any>({
+  const [currentPosition, setCurrentPosition] = useState({
     coords: {
       latitude: 0,
       longitude: 0,
@@ -38,12 +32,8 @@ export default function Home() {
   const {latitude, longitude} = currentPosition?.coords || {};
 
   /** 지하철역 좌표 */
-  const [metroData, setMetroData] = useState<MetroDataProps[]>([]);
+  const [metroData, setMetroData] = useState<MetroRowData[]>([]);
   const [P0, setP0] = useState(INITIAL_POSITION);
-  // const [P0, setP0] = useState({
-  //   latitude: latitude,
-  //   longitude: longitude,
-  // });
 
   useEffect(() => {
     requestPermissions();
@@ -63,18 +53,18 @@ export default function Home() {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm({
+  } = useForm<SearchResult>({
     defaultValues: {
       searchResult: '',
     },
   });
 
+  const [searchText, setSearchText] = useState('');
+
   /** CONDITIONS */
   const isTargetedStation =
     Math.abs(P0.latitude - latitude) < 0.005 &&
     Math.abs(P0.longitude - longitude) < 0.005;
-
-  console.log('isTargetedStation', isTargetedStation);
 
   useEffect(() => {
     if (isTargetedStation) {
@@ -82,24 +72,22 @@ export default function Home() {
     }
   }, [isTargetedStation]);
 
-  /** HANDLERS */
-
-  const onSubmit = (data: SearchResult) => getMetroData(data);
-
-  const getMetroData = async (data: SearchResult) => {
+  /** 지하철역 정보 API CALL */
+  const getMetroData = async (searchTerm: string) => {
     try {
       const response = await axios.get(URL);
       const metroRowData = response.data.subwayStationMaster.row;
       setMetroData(metroRowData);
-      const filteredData = metroRowData.filter(
-        (item: MetroRowData) => item.STATN_NM === data.searchResult,
+      const filteredData = metroData.filter(
+        // (item: MetroRowData) => item.STATN_NM === searchText,
+        (item: MetroRowData) => item.STATN_NM === searchTerm,
       );
       setP0({
         latitude: Number(filteredData[0].CRDNT_Y),
         longitude: Number(filteredData[0].CRDNT_X),
       });
     } catch (error) {
-      console.log('error', error);
+      console.log('getMetroData error', error);
     }
   };
 
@@ -129,7 +117,7 @@ export default function Home() {
         },
       });
     } catch (error: any) {
-      Alert.alert('error', error);
+      console.warn('error', error);
     }
   };
 
@@ -137,17 +125,18 @@ export default function Home() {
   const stopForegroundService = async () => {
     try {
       await notifee.stopForegroundService();
+      Geolocation.stopObserving(); // 대체: Geolocation.clearWatch(watchId)
     } catch (error: any) {
-      Alert.alert('error', error);
+      console.warn('error', error);
     }
   };
 
   /** 백그라운드일 때 이벤트 */
-  const onBackgroundEvent = () => {
-    notifee.onBackgroundEvent(async () => {
-      console.log('onBackgroundEvent start in background');
-    });
-  };
+  // const onBackgroundEvent = () => {
+  notifee.onBackgroundEvent(async () => {
+    console.log('onBackgroundEvent start in background');
+  });
+  // };
 
   notifee.registerForegroundService(() => {
     return new Promise(() => {
@@ -179,38 +168,74 @@ export default function Home() {
     });
   });
 
+  /** 키보드 올라왔을 때 플랫폼 별 UI 대처 */
+
+  const {StatusBarManager} = NativeModules;
+  useEffect(() => {
+    Platform.OS === 'ios'
+      ? StatusBarManager.getHeight(statusBarFrameData => {
+          setStatusBarHeight(statusBarFrameData.height);
+        })
+      : null;
+  }, []);
+
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+
   /** UI */
 
   return (
-    <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'}>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            placeholder="하차하실 역을 입력해주세요."
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name="searchResult"
-      />
-      {errors.searchResult && <Text>This is required.</Text>}
-      <Button title="도착역 찾기" onPress={handleSubmit(onSubmit)} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={statusBarHeight + 54}
+      style={{flex: 1}}>
+      <SearchBarContainer>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={{padding: 10, width: '90%'}}
+              placeholder="하차하실 역을 입력해주세요."
+              onBlur={onBlur}
+              onChangeText={text => {
+                setSearchText(text);
+                console.log('searchText in text input', searchText);
+                onChange(text);
+              }}
+              value={searchText}
+            />
+          )}
+          name="searchResult"
+        />
+        {errors.searchResult && <Text>필수 입력창입니다.</Text>}
 
-      <Button title="알림 설정" onPress={() => onDisplayNotification()} />
-      <Button title="알림 해제" onPress={stopForegroundService} />
+        {searchText && (
+          <RemoveSearchTextButton onPress={() => setSearchText('')}>
+            <Text>X</Text>
+          </RemoveSearchTextButton>
+        )}
+      </SearchBarContainer>
+
+      <SearchResultsList
+        searchText={searchText}
+        setSearchText={setSearchText}
+        metroData={metroData}
+        // onPress={handleSubmit(() => getMetroData())}
+        getMetroData={getMetroData}
+        P0={P0}
+        setP0={setP0}
+      />
+
       <NaverMapView
-        style={{width: '100%', height: '60%'}}
+        style={NaverMapViewContainer}
         showsMyLocationButton={false}
         center={{
-          latitude: latitude,
-          longitude: longitude,
-          // ...P0,
-          zoom: 16,
+          // latitude: latitude,
+          // longitude: longitude,
+          ...P0,
+          zoom: 14,
         }}
         // 해당하는 좌표로 화면을 이동:
         // animateToCoordinate={{
@@ -230,15 +255,66 @@ export default function Home() {
         />
         <Circle coordinate={P0} radius={300} color={'rgba(255,0,0,0.3)'} />
       </NaverMapView>
-      <Text>현재위치: {latitude}</Text>
-      <Text>현재위치: {longitude}</Text>
-      <Text>{String(isTargetedStation)}</Text>
-      <Text>
-        타깃 역:{P0.latitude} ({P0.latitude - latitude})
-      </Text>
-      <Text>
-        타깃 역:{P0.longitude} ({P0.longitude - longitude})
-      </Text>
+
+      <PrimaryButton onPress={handleSubmit(() => getMetroData(searchText))}>
+        <PrimaryButtonText>도착역 찾기</PrimaryButtonText>
+      </PrimaryButton>
+      {/* 알림 설정: */}
+      <PrimaryButton onPress={() => onDisplayNotification()}>
+        <PrimaryButtonText>알림 설정</PrimaryButtonText>
+      </PrimaryButton>
+
+      {/* 알림 해제: */}
+      <DangerButton onPress={stopForegroundService}>
+        <PrimaryButtonText>알림 해제</PrimaryButtonText>
+      </DangerButton>
     </KeyboardAvoidingView>
   );
 }
+
+const SearchBarContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+`;
+
+const RemoveSearchTextButton = styled.TouchableOpacity`
+  width: 10%;
+`;
+
+const PrimaryButton = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  position: relative;
+  /* position: absolute; */
+  bottom: 30%;
+  height: 50px;
+  width: 90%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #190c8d;
+  border-radius: 13px;
+`;
+
+const SecondaryButton = styled(PrimaryButton)`
+  background-color: #f2f2f2;
+`;
+
+const DangerButton = styled(PrimaryButton)`
+  background-color: #b50404;
+`;
+
+const PrimaryButtonText = styled.Text`
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const NaverMapViewContainer = {
+  height: '100%',
+  width: '100%',
+};
