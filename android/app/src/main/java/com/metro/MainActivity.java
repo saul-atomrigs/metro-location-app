@@ -1,4 +1,4 @@
-package com.metro;
+package com.metrolocationapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
