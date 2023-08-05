@@ -110,9 +110,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.metro"
+    namespace "com.metrolocationapp"
     defaultConfig {
-        applicationId "com.metro"
+        applicationId "com.metrolocationapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

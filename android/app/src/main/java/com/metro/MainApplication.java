@@ -1,4 +1,4 @@
-package com.metro;
+package com.metrolocationapp;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
