@@ -100,3 +100,21 @@ import ImportHeaven from 'screens/ImportHeaven'
     [해결] 여기서 xcdoeproj 가 아닌 xcworkspace 파일을 통해서 xcode를 열어야한다.
     
     [출처] https://alpoxdev.tistory.com/18
+
+- ### Failed to start the app. Error: spawnSync adb ENOENT August 20, 2023
+
+    [안드로이드 빌드 에러] 
+    
+    [원인] 미상
+    
+    [해결] 터미널에 `nano ~./zshrc` → 환경변수 재설정:
+    
+    ```
+    export ANDROID_HOME={복사한 안드로이드 sdk 위치}
+    export PATH=$PATH:$ANDROID_HOME/emulator
+    export PATH=$PATH:$ANDROID_HOME/tools
+    export PATH=$PATH:$ANDROID_HOME/tools/bin
+    export PATH=$PATH:$ANDROID_HOME/platform-tools
+    ```
+    
+    [출처] [https://velog.io/@minwoo129/React-Native-개발환경-설정mac-OS](https://velog.io/@minwoo129/React-Native-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EC%84%A4%EC%A0%95mac-OS)
