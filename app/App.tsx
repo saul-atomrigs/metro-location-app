@@ -2,8 +2,9 @@ import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 import {RecoilRoot} from 'recoil';
 
-import Home from 'screens/Home';
-import {colors} from 'styles/common';
+import Home from './screens/Home';
+import Tutorial from './screens/tutorial/Tutorial';
+import {colors} from './styles/common';
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -16,7 +17,7 @@ export default function App() {
   return (
     <RecoilRoot>
       <SafeAreaView style={backgroundStyle}>
-        <Home />
+        <Tutorial />
       </SafeAreaView>
     </RecoilRoot>
   );
