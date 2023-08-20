@@ -101,6 +101,26 @@ import ImportHeaven from 'screens/ImportHeaven'
     
     [출처] https://alpoxdev.tistory.com/18
 
+- ### 안드로이드 앱 출시 August 5, 2023 
+
+    [Android앱 출시 에러] Android 13(API 33)에 광고 ID 변경사항 도입광고 ID를 사용하고 Android 13 이상을 타겟팅하는 앱은 앱 매니페스트에서 com.google.android.gms.permission.AD_ID 권한을 선언해야 합니다.
+    
+    [해결] **(1) 광고가 없을 시** `AndroidManifest.xml`에 다음을 추가:
+    
+    ```jsx
+    <uses-permission
+            android:name="com.google.android.gms.permission.AD_ID"
+            tools:node="remove" />
+    
+    <meta-data
+                android:name="google_analytics_adid_collection_enabled"
+                android:value="false" />
+    ```
+    
+    **(2) 광고가 있다면** 콘솔에서 광고 사용을 '예'로 하고 Analytics를 체크
+    
+    [출처] [https://velog.io/@zinkiki/Android앱-출시-Android-13API-33에-광고-ID-변경사항-도입광고-ID를-사용하고-Android-13-이상을-타겟팅하는-앱은-앱-매니페스트에서-com.google.android.gms.permission.ADID-권한을-선언해야-합니다](https://velog.io/@zinkiki/Android%EC%95%B1-%EC%B6%9C%EC%8B%9C-Android-13API-33%EC%97%90-%EA%B4%91%EA%B3%A0-ID-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EB%8F%84%EC%9E%85%EA%B4%91%EA%B3%A0-ID%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-Android-13-%EC%9D%B4%EC%83%81%EC%9D%84-%ED%83%80%EA%B2%9F%ED%8C%85%ED%95%98%EB%8A%94-%EC%95%B1%EC%9D%80-%EC%95%B1-%EB%A7%A4%EB%8B%88%ED%8E%98%EC%8A%A4%ED%8A%B8%EC%97%90%EC%84%9C-com.google.android.gms.permission.ADID-%EA%B6%8C%ED%95%9C%EC%9D%84-%EC%84%A0%EC%96%B8%ED%95%B4%EC%95%BC-%ED%95%A9%EB%8B%88%EB%8B%A4)
+
 - ### Failed to start the app. Error: spawnSync adb ENOENT August 20, 2023
 
     [안드로이드 빌드 에러] 
