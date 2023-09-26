@@ -41,6 +41,7 @@ export default function SearchResultsList({
                   setSearchText={setSearchText}
                   searchText={searchText}
                   result={station.STATN_NM}
+                  metroLine={station.ROUTE}
                   getMetroData={getMetroData}
                   P0={P0}
                   setP0={setP0}
@@ -59,5 +60,4 @@ const SearchResults = styled.View`
   z-index: 1;
   background-color: #fff;
   width: 100%;
-  padding: 10px;
 `;

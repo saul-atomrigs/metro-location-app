@@ -4,13 +4,15 @@ import styled from 'styled-components/native';
 
 type SearchResultProps = {
   result: string;
+  metroLine: string;
   searchText: string;
   setSearchText: (text: string) => void;
-  getMetroData: () => void;
+  getMetroData: (text: string) => void;
 };
 
 export default function SearchResult({
   result,
+  metroLine,
   setSearchText,
   getMetroData,
 }: SearchResultProps) {
@@ -23,12 +25,13 @@ export default function SearchResult({
     <SearchResultBox
       // onPress={onPress}
       onPress={onPressHandler}>
-      <Text>{result}</Text>
+      <Text>
+        {result} ({metroLine})
+      </Text>
     </SearchResultBox>
   );
 }
 
 const SearchResultBox = styled.TouchableOpacity`
-  margin-bottom: 20px;
-  margin-horizontal: 5px;
+  margin: 10px;
 `;
