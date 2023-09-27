@@ -1,11 +1,12 @@
 # metro-location-app
 
-## 기획 의도
+## 💡 프로젝트 소개
 지하철 타고 가다가 내려야되는 역을 듣지 못하고 지나쳐버린 개인 경험에서 비롯하여 이를 해결해줄 앱을 만들기로 결심하였습니다. 
 
-본 앱은 유저 기기의 geolocation 데이터를 실시간으로 추적하여 background 상태일 때도 내릴 역에 도착하면 알림을 띄워줍니다.
+사용자의 현재 위치를 실시간으로 파악하기 위해 모바일 디바이스의 geolocation 데이터를 추적하여 앱이 background 상태일 때도 내릴 역에 도착하면 푸쉬알림을 띄워줍니다.
 
-## 주요 개발 포인트 (이슈, 버그, 개선)
+
+## 💡 주요 개발 포인트 (이슈, 버그, 개선)
 - ### 절대경로 세팅, 2023.03.15
   [커밋] https://github.com/saul-atomrigs/metro-location-app/commit/071a4dd0acd691baccdd73c14f2e8dc08683489f)
 ```
@@ -138,3 +139,17 @@ import ImportHeaven from 'screens/ImportHeaven'
     ```
     
     [출처] [https://velog.io/@minwoo129/React-Native-개발환경-설정mac-OS](https://velog.io/@minwoo129/React-Native-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EC%84%A4%EC%A0%95mac-OS)
+
+- ### **'butter/map.h' error**
+
+    [iOS 빌드 에러] 스크린샷
+
+    <img width="270" alt="스크린샷 2023-09-27 오후 11 28 36" src="https://github.com/saul-atomrigs/metro-location-app/assets/82362278/c917b969-c4a2-4b59-be4f-5e84acfeede6">
+
+    [해결] XCode 빌드 폴더 클린 후 다음 커맨드 실행:
+    ```
+    rm -rf ios/build
+    rm -rf Pods
+    pod install
+    ```
+    [출처] https://github.com/software-mansion/react-native-reanimated/issues/3823#issuecomment-1346687536
