@@ -18,7 +18,7 @@ import notifee, {AndroidImportance} from '@notifee/react-native';
 
 import {MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
-import {requestPermissions} from 'util/geolocation';
+import {requestGeolocationPermissions} from 'util/geolocation';
 import SearchResultsList from 'components/SearchResultsList';
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
   const [P0, setP0] = useState(INITIAL_POSITION);
 
   useEffect(() => {
-    requestPermissions();
+    requestGeolocationPermissions();
     Geolocation.watchPosition(
       position => {
         setCurrentPosition(position);
