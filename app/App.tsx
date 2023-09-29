@@ -8,8 +8,13 @@ import Home from './screens/Home';
 import Tutorial from './screens/tutorial/Tutorial';
 import {colors} from './styles/common';
 
+type RootStackParamList = {
+  Home: undefined;
+  Tutorial: undefined;
+};
+
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   const isDarkMode = useColorScheme() === 'dark';
 
