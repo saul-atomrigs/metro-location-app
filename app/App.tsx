@@ -1,11 +1,16 @@
 import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 import {RecoilRoot} from 'recoil';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Home from 'screens/Home';
-import {colors} from 'styles/common';
+import Home from './screens/Home';
+import Tutorial from './screens/tutorial/Tutorial';
+import {colors} from './styles/common';
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -16,7 +21,16 @@ export default function App() {
   return (
     <RecoilRoot>
       <SafeAreaView style={backgroundStyle}>
-        <Home />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Tutorial">
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="Tutorial"
+              component={Tutorial}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </SafeAreaView>
     </RecoilRoot>
   );
