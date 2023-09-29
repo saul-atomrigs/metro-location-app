@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
+import {ParamListBase, useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import MapAnimation from 'components/map-animation/MapAnimation';
 import {requestGeolocationPermissions} from 'util/geolocation';
@@ -10,7 +11,7 @@ export default function Tutorial() {
   const [isGeolocationPermissionGranted, setIsGeolocationPermissionGranted] =
     useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handleAgreePress = async () => {
     const result = await requestGeolocationPermissions();
