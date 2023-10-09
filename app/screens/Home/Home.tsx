@@ -1,14 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {
-  KeyboardAvoidingView,
-  Text,
-  TextInput,
-  Keyboard,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import {Text, Keyboard, NativeModules, Platform} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
