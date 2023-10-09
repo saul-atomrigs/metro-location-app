@@ -190,7 +190,7 @@ export default function Home() {
               onBlur={onBlur}
               onChangeText={text => {
                 setSearchText(text);
-                console.log('searchText in text input', searchText);
+                getMetroData(text);
                 onChange(text);
               }}
               value={searchText}
@@ -245,9 +245,6 @@ export default function Home() {
         <Circle coordinate={P0} radius={300} color={'rgba(255,0,0,0.3)'} />
       </NaverMapView>
 
-      <PrimaryButton onPress={handleSubmit(() => getMetroData(searchText))}>
-        <PrimaryButtonText>도착역 찾기</PrimaryButtonText>
-      </PrimaryButton>
       {/* 알림 설정: */}
       <PrimaryButton onPress={() => onDisplayNotification()}>
         <PrimaryButtonText>알림 설정</PrimaryButtonText>

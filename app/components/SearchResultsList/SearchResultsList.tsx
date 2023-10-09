@@ -22,35 +22,33 @@ export default function SearchResultsList({
 }: SearchResultsListProps) {
   console.log('P0 --', P0);
   return (
-    metroData && (
-      <SearchResults>
-        {metroData
-          .filter(station => {
-            if (searchText === '') {
-              return null;
-            } else if (
-              station.STATN_NM.toLowerCase().includes(searchText.toLowerCase())
-            ) {
-              return station;
-            }
-          })
-          .map(station => {
-            return (
-              <View>
-                <SearchResult
-                  setSearchText={setSearchText}
-                  searchText={searchText}
-                  result={station.STATN_NM}
-                  metroLine={station.ROUTE}
-                  getMetroData={getMetroData}
-                  P0={P0}
-                  setP0={setP0}
-                />
-              </View>
-            );
-          })}
-      </SearchResults>
-    )
+    <SearchResults>
+      {metroData
+        .filter(station => {
+          if (searchText === '') {
+            return null;
+          } else if (
+            station.STATN_NM.toLowerCase().includes(searchText.toLowerCase())
+          ) {
+            return station;
+          }
+        })
+        .map(station => {
+          return (
+            <View>
+              <SearchResult
+                setSearchText={setSearchText}
+                searchText={searchText}
+                result={station.STATN_NM}
+                metroLine={station.ROUTE}
+                getMetroData={getMetroData}
+                P0={P0}
+                setP0={setP0}
+              />
+            </View>
+          );
+        })}
+    </SearchResults>
   );
 }
 
