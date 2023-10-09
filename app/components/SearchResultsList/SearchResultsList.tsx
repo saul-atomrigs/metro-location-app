@@ -56,8 +56,8 @@ export default function SearchResultsList({
 
 const SearchResults = styled.View`
   position: absolute;
-  top: 40px;
   z-index: 1;
   background-color: #fff;
-  width: 100%;
+  border-radius: 13px;
+  width: 90%;
 `;

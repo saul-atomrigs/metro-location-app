@@ -28,7 +28,11 @@ export default function App() {
       <SafeAreaView style={backgroundStyle}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Tutorial">
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Tutorial"
               component={Tutorial}
