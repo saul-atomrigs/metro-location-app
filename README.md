@@ -6,6 +6,29 @@
 사용자의 현재 위치를 실시간으로 파악하기 위해 모바일 디바이스의 geolocation 데이터를 추적하여 앱이 background 상태일 때도 내릴 역에 도착하면 푸쉬알림을 띄워줍니다.
 
 
+## 💡 Installation
+
+Android Studio (emulator) 또는 XCode (simulator) 또는 실기기 연결 후 로컬환경에서 다음 명령어를 실행해주세요.
+
+```bash
+  yarn start
+  yarn run android // or yarn run ios
+```
+
+## 💡 Tech Stack
+
+- **프론트엔드:** React Native, Styled-Components
+- **상태관리:** Recoil
+
+- **푸시알림:** notifee
+
+- **지도:** React-native-nmap, react-native-geolocation-service
+
+- **테스트:** jest
+
+- **코드컨벤션:** eslint, prettier, airbnb guide
+
+
 ## 💡 주요 개발 포인트 (이슈, 버그, 개선)
 - ### 절대경로 세팅, 2023.03.15
   [커밋] https://github.com/saul-atomrigs/metro-location-app/commit/071a4dd0acd691baccdd73c14f2e8dc08683489f)
