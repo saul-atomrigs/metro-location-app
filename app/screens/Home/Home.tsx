@@ -1,14 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {
-  KeyboardAvoidingView,
-  Text,
-  TextInput,
-  Keyboard,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import {Text, Keyboard, NativeModules, Platform} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
@@ -16,7 +7,7 @@ import {useForm, Controller} from 'react-hook-form';
 import Geolocation from 'react-native-geolocation-service';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
-import {MetroRowData, SearchResult} from './Home.types';
+import type {MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
 import {requestGeolocationPermissions} from 'util/geolocation';
 import SearchResultsList from 'components/SearchResultsList';
