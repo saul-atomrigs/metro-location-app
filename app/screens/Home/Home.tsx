@@ -297,7 +297,7 @@ const CloseButton = styled.Image`
 const SearchListContainer = styled.View`
   align-items: center;
   z-index: 1;
-  top: 10%;
+  top: 70px;
 `;
 
 const PrimaryButton = styled.TouchableOpacity`
