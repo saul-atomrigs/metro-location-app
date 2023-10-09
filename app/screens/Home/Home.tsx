@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import {useForm, Controller} from 'react-hook-form';
 import Geolocation from 'react-native-geolocation-service';
 import notifee, {AndroidImportance} from '@notifee/react-native';
+import {debounce} from 'lodash';
 
 import type {MetroRowData, SearchResult} from './Home.types';
 import {URL, INITIAL_POSITION} from './Home.constants';
@@ -81,6 +82,8 @@ export default function Home() {
       console.log('getMetroData error', error);
     }
   };
+
+  const debouncedGetMetroData = debounce(getMetroData, 700);
 
   /** NOTIFEE 알람 (FOREGROUND SERVICE) */
   const onDisplayNotification = async () => {
@@ -189,8 +192,9 @@ export default function Home() {
               placeholder="하차하실 역을 입력해주세요."
               onBlur={onBlur}
               onChangeText={text => {
+                // TODO: lodash - debounce
                 setSearchText(text);
-                getMetroData(text);
+                debouncedGetMetroData(text);
                 onChange(text);
               }}
               value={searchText}
