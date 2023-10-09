@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Keyboard, NativeModules, Platform} from 'react-native';
+import {Keyboard, NativeModules, Platform} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
