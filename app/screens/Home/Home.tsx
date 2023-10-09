@@ -184,19 +184,17 @@ export default function Home() {
   /** UI */
 
   return (
-    <KeyboardAvoidingView
+    <StyledKeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={statusBarHeight + 54}
-      style={{flex: 1}}>
-      <SearchBarContainer>
+      keyboardVerticalOffset={statusBarHeight + 54}>
+      <>
         <Controller
           control={control}
           rules={{
             required: true,
           }}
           render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              style={{padding: 10, width: '90%'}}
+            <SearchBarInput
               placeholder="하차하실 역을 입력해주세요."
               onBlur={onBlur}
               onChangeText={text => {
@@ -209,24 +207,25 @@ export default function Home() {
           )}
           name="searchResult"
         />
-        {errors.searchResult && <Text>필수 입력창입니다.</Text>}
 
         {searchText && (
           <RemoveSearchTextButton onPress={() => setSearchText('')}>
             <Text>X</Text>
           </RemoveSearchTextButton>
         )}
-      </SearchBarContainer>
+      </>
 
-      <SearchResultsList
-        searchText={searchText}
-        setSearchText={setSearchText}
-        metroData={metroData}
-        // onPress={handleSubmit(() => getMetroData())}
-        getMetroData={getMetroData}
-        P0={P0}
-        setP0={setP0}
-      />
+      <SearchListContainer>
+        <SearchResultsList
+          searchText={searchText}
+          setSearchText={setSearchText}
+          metroData={metroData}
+          // onPress={handleSubmit(() => getMetroData())}
+          getMetroData={getMetroData}
+          P0={P0}
+          setP0={setP0}
+        />
+      </SearchListContainer>
 
       <NaverMapView
         style={NaverMapViewContainer}
@@ -268,20 +267,44 @@ export default function Home() {
       <DangerButton onPress={stopForegroundService}>
         <PrimaryButtonText>알림 해제</PrimaryButtonText>
       </DangerButton>
-    </KeyboardAvoidingView>
+    </StyledKeyboardAvoidingView>
   );
 }
 
+const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
+  flex: 1;
+  position: relative;
+`;
+
 const SearchBarContainer = styled.View`
+  position: absolute;
+`;
+
+const SearchBarInput = styled.TextInput`
+  z-index: 1;
+  width: 90%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  align-self: center;
+  position: absolute;
   background-color: #fff;
+  z-index: 1;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 13px;
+  border: 1px solid #190c8d;
 `;
 
 const RemoveSearchTextButton = styled.TouchableOpacity`
   width: 10%;
+`;
+
+const SearchListContainer = styled.View`
+  align-items: center;
+  z-index: 1;
+  top: 10%;
 `;
 
 const PrimaryButton = styled.TouchableOpacity`
@@ -290,18 +313,12 @@ const PrimaryButton = styled.TouchableOpacity`
   align-items: center;
   align-self: center;
   position: relative;
-  /* position: absolute; */
-  bottom: 30%;
+  bottom: 25%;
   height: 50px;
   width: 90%;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   background-color: #190c8d;
   border-radius: 13px;
-`;
-
-const SecondaryButton = styled(PrimaryButton)`
-  background-color: #f2f2f2;
 `;
 
 const DangerButton = styled(PrimaryButton)`
