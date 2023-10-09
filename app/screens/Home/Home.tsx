@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Keyboard, NativeModules, Platform} from 'react-native';
+import {View, Keyboard, NativeModules, Platform} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
@@ -178,13 +178,13 @@ export default function Home() {
     <StyledKeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={statusBarHeight + 54}>
-      <>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <>
             <SearchBarInput
               placeholder="하차하실 역을 입력해주세요."
               onBlur={onBlur}
@@ -195,16 +195,15 @@ export default function Home() {
               }}
               value={searchText}
             />
-          )}
-          name="searchResult"
-        />
-
-        {searchText && (
-          <RemoveSearchTextButton onPress={() => setSearchText('')}>
-            <Text>X</Text>
-          </RemoveSearchTextButton>
+            {searchText && (
+              <RemoveSearchTextButton onPress={() => setSearchText('')}>
+                <CloseButton source={require('../../assets/icons/close.png')} />
+              </RemoveSearchTextButton>
+            )}
+          </>
         )}
-      </>
+        name="searchResult"
+      />
 
       <SearchListContainer>
         <SearchResultsList
@@ -267,10 +266,6 @@ const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   position: relative;
 `;
 
-const SearchBarContainer = styled.View`
-  position: absolute;
-`;
-
 const SearchBarInput = styled.TextInput`
   z-index: 1;
   width: 90%;
@@ -281,15 +276,22 @@ const SearchBarInput = styled.TextInput`
   align-self: center;
   position: absolute;
   background-color: #fff;
-  z-index: 1;
-  margin-top: 20px;
+  top: 20px;
   padding: 10px;
   border-radius: 13px;
   border: 1px solid #190c8d;
 `;
 
 const RemoveSearchTextButton = styled.TouchableOpacity`
-  width: 10%;
+  position: absolute;
+  right: 30px;
+  top: 35px;
+  z-index: 2;
+`;
+
+const CloseButton = styled.Image`
+  width: 20px;
+  height: 20px;
 `;
 
 const SearchListContainer = styled.View`
