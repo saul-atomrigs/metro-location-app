@@ -9,6 +9,11 @@
 ![Screenshot_1696865246](https://github.com/saul-atomrigs/metro-location-app/assets/82362278/8b4f79f6-2c58-44ed-bfef-971b0defe5a0)
 
 
+## 💡 Authors
+
+- [@saul-atomrigs](https://www.github.com/saul-atomrigs)
+
+
 ## 💡 Installation
 
 Android Studio (emulator) 또는 XCode (simulator) 또는 실기기 연결 후 로컬환경에서 다음 명령어를 실행해주세요.
