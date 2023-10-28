@@ -36,6 +36,31 @@ Android Studio (emulator) 또는 XCode (simulator) 또는 실기기 연결 후 �
 
 - **코드컨벤션:** eslint, prettier, airbnb guide
 
+## 💡 Performance (속도 및 성능 개선 코드)
+### debounce 적용해서 input 타이핑 시 API 호출 줄이기
+
+[문제] 기존 코드에는 한글자 타이핑 할 때 마다 지하철 데이터 API 함수를 호출하기 때문에 상당히 비효율적이었습니다.
+
+[해결] `lodash` 라이브러리의 `debounce` 메서드를 이용하여 700ms 동안 호출을 지연시킵니다. 타이핑이 멈추고 (끝나고) 해당 시간이 지난 후에야 함수 호출을 하기 때문에 불필요한 호출 빈도를 줄일 수 있습니다. 
+
+[코드]  
+
+```tsx
+import {debounce} from 'lodash';
+...
+const debouncedGetMetroData = debounce(getMetroData, 700);
+...
+// jsx
+<SearchBarInput
+	...
+  onChangeText={text => {
+    debouncedGetMetroData(text);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  }}
+/>
+```
+[출처] https://www.mrlatte.net/code/2020/12/15/lodash-debounce
+
 
 ## 💡 주요 개발 포인트 (이슈, 버그, 개선)
 - ### 절대경로 세팅, 2023.03.15
