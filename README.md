@@ -34,7 +34,7 @@ Android Studio (emulator) 또는 XCode (simulator) 또는 실기기 연결 후 �
 
 - **테스트:** jest
 
-- **코드컨벤션:** eslint, prettier, airbnb guide
+- **코드컨벤션:** eslint, prettier
 
 ## 💡 Performance (속도 및 성능 개선 코드)
 ### debounce 적용해서 input 타이핑 시 API 호출 줄이기
