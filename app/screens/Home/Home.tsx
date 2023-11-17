@@ -5,7 +5,7 @@ import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import {useForm, Controller} from 'react-hook-form';
 import Geolocation from 'react-native-geolocation-service';
-import notifee, {AndroidImportance} from '@notifee/react-native';
+import notifee from '@notifee/react-native';
 import {debounce} from 'lodash';
 
 import type {MetroRowData, SearchResult} from './Home.types';
@@ -21,6 +21,7 @@ import {
   watchCurrentPosition,
 } from 'util/geolocation';
 import SearchResultsList from 'components/SearchResultsList';
+import {displayNotifee} from 'util/notification';
 
 export default function Home() {
   /** 유저의 현재 Geolocation 좌표 */
@@ -98,25 +99,7 @@ export default function Home() {
       if (Platform.OS === 'ios') {
         await notifee.requestPermission();
       }
-
-      const channelId = await notifee.createChannel({
-        id: 'default',
-        name: 'Default Channel',
-        importance: AndroidImportance.HIGH,
-      });
-
-      await notifee.displayNotification({
-        id: '123',
-        title: '지하철 앱',
-        body: '내리세요 서비스를 시작합니다',
-        android: {
-          channelId,
-          asForegroundService: true, // registerForegroundService에서 등록한 runner에 bound됨
-          pressAction: {
-            id: 'default',
-          },
-        },
-      });
+      displayNotifee('지하철 앱', '내리세요 서비스를 시작합니다');
     } catch (error: any) {
       console.warn('error', error);
     }
@@ -145,22 +128,7 @@ export default function Home() {
         if (
           targetStation(searchMetroCoords, currentLatitude, currentLongitude)
         ) {
-          const channelId = await notifee.createChannel({
-            id: 'default',
-            name: 'Default Channel',
-            importance: AndroidImportance.HIGH,
-          });
-          notifee.displayNotification({
-            id: '123',
-            title: '지하철 앱',
-            body: '이번 역에서 내리세요',
-            android: {
-              channelId,
-              pressAction: {
-                id: 'default',
-              },
-            },
-          });
+          displayNotifee('도착하였습니다', '이번 역에서 내리세요');
         }
       });
     });
