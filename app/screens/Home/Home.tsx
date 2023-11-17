@@ -20,8 +20,9 @@ import {
   targetStation,
   watchCurrentPosition,
 } from 'util/geolocation';
-import SearchResultsList from 'components/SearchResultsList';
 import {displayNotifee} from 'util/notification';
+import SearchResultsList from 'components/SearchResultsList';
+import Button from 'components/button';
 
 export default function Home() {
   /** 유저의 현재 Geolocation 좌표 */
@@ -217,15 +218,17 @@ export default function Home() {
         />
       </NaverMapView>
 
-      {/* 알림 설정: */}
-      <PrimaryButton onPress={() => onDisplayNotification()}>
-        <PrimaryButtonText>알림 설정</PrimaryButtonText>
-      </PrimaryButton>
+      <Button
+        onPress={onDisplayNotification}
+        title="알림 설정"
+        buttonStyle="primary"
+      />
 
-      {/* 알림 해제: */}
-      <DangerButton onPress={stopForegroundService}>
-        <PrimaryButtonText>알림 해제</PrimaryButtonText>
-      </DangerButton>
+      <Button
+        onPress={stopForegroundService}
+        title="알림 해제"
+        buttonStyle="danger"
+      />
     </StyledKeyboardAvoidingView>
   );
 }
@@ -267,30 +270,6 @@ const SearchListContainer = styled.View`
   align-items: center;
   z-index: 1;
   top: 70px;
-`;
-
-const PrimaryButton = styled.TouchableOpacity`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  position: relative;
-  bottom: 25%;
-  height: 50px;
-  width: 90%;
-  margin-bottom: 10px;
-  background-color: #190c8d;
-  border-radius: 13px;
-`;
-
-const DangerButton = styled(PrimaryButton)`
-  background-color: #b50404;
-`;
-
-const PrimaryButtonText = styled.Text`
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
 `;
 
 const NaverMapViewContainer = {
