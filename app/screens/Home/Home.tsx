@@ -3,12 +3,11 @@ import {Keyboard, NativeModules, Platform} from 'react-native';
 import axios from 'axios';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
-import {useForm, Controller} from 'react-hook-form';
 import Geolocation from 'react-native-geolocation-service';
 import notifee from '@notifee/react-native';
 import {debounce} from 'lodash';
 
-import type {MetroRowData, SearchResult} from './Home.types';
+import type {MetroRowData} from './Home.types';
 import {
   URL,
   INITIAL_POSITION,
@@ -23,6 +22,7 @@ import {
 import {displayNotifee} from 'util/notification';
 import SearchResultsList from 'components/SearchResultsList';
 import Button from 'components/button';
+import SearchBar from 'components/search-bar';
 
 export default function Home() {
   /** 유저의 현재 Geolocation 좌표 */
@@ -38,17 +38,6 @@ export default function Home() {
     requestGeolocationPermissions();
     watchCurrentPosition(setCurrentPosition);
   }, []);
-
-  /** REACT-HOOK-FORM */
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<SearchResult>({
-    defaultValues: {
-      searchResult: '',
-    },
-  });
 
   /** CONDITIONS */
   const isTargetedStation =
@@ -154,31 +143,10 @@ export default function Home() {
     <StyledKeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={statusBarHeight + 54}>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <>
-            <SearchBarInput
-              placeholder="하차하실 역을 입력해주세요."
-              onBlur={onBlur}
-              onChangeText={text => {
-                setSearchText(text);
-                debouncedGetMetroData(text);
-                onChange(text);
-              }}
-              value={searchText}
-            />
-            {searchText && (
-              <RemoveSearchTextButton onPress={() => setSearchText('')}>
-                <CloseButton source={require('../../assets/icons/close.png')} />
-              </RemoveSearchTextButton>
-            )}
-          </>
-        )}
-        name="searchResult"
+      <SearchBar
+        searchText={searchText}
+        setSearchText={setSearchText}
+        debouncedGetMetroData={debouncedGetMetroData}
       />
 
       <SearchListContainer>
@@ -236,34 +204,6 @@ export default function Home() {
 const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
   position: relative;
-`;
-
-const SearchBarInput = styled.TextInput`
-  z-index: 1;
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  position: absolute;
-  background-color: #fff;
-  top: 20px;
-  padding: 10px;
-  border-radius: 13px;
-  border: 1px solid #190c8d;
-`;
-
-const RemoveSearchTextButton = styled.TouchableOpacity`
-  position: absolute;
-  right: 30px;
-  top: 35px;
-  z-index: 2;
-`;
-
-const CloseButton = styled.Image`
-  width: 20px;
-  height: 20px;
 `;
 
 const SearchListContainer = styled.View`
