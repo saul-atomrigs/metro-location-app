@@ -1,7 +1,8 @@
 import {PermissionsAndroid, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {TARGET_LOCATION_DISTANCE} from 'screens/Home/Home.constants';
 
-async function requestGeolocationPermissions() {
+const requestGeolocationPermissions = async () => {
   if (Platform.OS === 'ios') {
     const auth = await Geolocation.requestAuthorization('whenInUse');
     if (auth === 'granted') {
@@ -23,6 +24,18 @@ async function requestGeolocationPermissions() {
       return false;
     }
   }
-}
+};
 
-export {requestGeolocationPermissions};
+const watchCurrentPosition = setCurrentPosition => {
+  Geolocation.watchPosition(
+    position => setCurrentPosition(position),
+    error => console.log(error.code, error.message),
+    {enableHighAccuracy: true, interval: 1000, distanceFilter: 1},
+  );
+};
+
+const targetStation = (searchMetroCoords, latitude, longitude) =>
+  Math.abs(searchMetroCoords.latitude - latitude) < TARGET_LOCATION_DISTANCE &&
+  Math.abs(searchMetroCoords.longitude - longitude) < TARGET_LOCATION_DISTANCE;
+
+export {requestGeolocationPermissions, watchCurrentPosition, targetStation};

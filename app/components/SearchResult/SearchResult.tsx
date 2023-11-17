@@ -5,7 +5,6 @@ import styled from 'styled-components/native';
 type SearchResultProps = {
   result: string;
   metroLine: string;
-  searchText: string;
   setSearchText: (text: string) => void;
   getMetroData: (text: string) => void;
 };
