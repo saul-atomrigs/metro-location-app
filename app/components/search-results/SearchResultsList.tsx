@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 
-import SearchResult from 'components/SearchResult/SearchResult';
+import SearchResult from 'components/search-results/search-result/SearchResult';
 import {MetroRowData} from 'screens/Home/Home.types';
 
 type SearchResultsListProps = {

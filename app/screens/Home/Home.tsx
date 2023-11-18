@@ -20,7 +20,6 @@ import {
   watchCurrentPosition,
 } from 'util/geolocation';
 import {displayNotifee} from 'util/notification';
-import SearchResultsList from 'components/SearchResultsList';
 import Button from 'components/button';
 import SearchBar from 'components/search-bar';
 
@@ -147,16 +146,9 @@ export default function Home() {
         searchText={searchText}
         setSearchText={setSearchText}
         debouncedGetMetroData={debouncedGetMetroData}
+        metroData={metroData}
+        getMetroData={getMetroData}
       />
-
-      <SearchListContainer>
-        <SearchResultsList
-          searchText={searchText}
-          setSearchText={setSearchText}
-          metroData={metroData}
-          getMetroData={getMetroData}
-        />
-      </SearchListContainer>
 
       <NaverMapView
         style={NaverMapViewContainer}
@@ -202,12 +194,6 @@ export default function Home() {
 const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
   position: relative;
-`;
-
-const SearchListContainer = styled.View`
-  align-items: center;
-  z-index: 1;
-  top: 70px;
 `;
 
 const NaverMapViewContainer = {
