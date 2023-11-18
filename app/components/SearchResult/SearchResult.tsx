@@ -15,15 +15,13 @@ export default function SearchResult({
   setSearchText,
   getMetroData,
 }: SearchResultProps) {
-  const onPressHandler = () => {
+  const handlePressSearchResult = () => {
     setSearchText(result);
     getMetroData(result);
   };
 
   return (
-    <SearchResultBox
-      // onPress={onPress}
-      onPress={onPressHandler}>
+    <SearchResultBox onPress={handlePressSearchResult}>
       <Text>
         {result} ({metroLine})
       </Text>

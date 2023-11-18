@@ -10,8 +10,6 @@ type SearchResultsListProps = {
   searchText: string;
   setSearchText: (text: string) => void;
   getMetroData: (searchTerm: string) => Promise<void>;
-  searchMetroCoords: {latitude: number; longitude: number};
-  setSearchMetroCoords: (coords: {latitude: number; longitude: number}) => void;
 };
 
 export default function SearchResultsList({
@@ -19,10 +17,7 @@ export default function SearchResultsList({
   searchText,
   setSearchText,
   getMetroData,
-  searchMetroCoords,
-  setSearchMetroCoords,
 }: SearchResultsListProps) {
-  console.log('searchMetroCoords --', searchMetroCoords);
   return (
     <SearchResults>
       {metroData
@@ -43,10 +38,6 @@ export default function SearchResultsList({
                 metroLine={station.ROUTE}
                 setSearchText={setSearchText}
                 getMetroData={getMetroData}
-
-                // searchText={searchText}
-                // searchMetroCoords={searchMetroCoords}
-                // setSearchMetroCoords={setSearchMetroCoords}
               />
             </View>
           );

@@ -155,8 +155,6 @@ export default function Home() {
           setSearchText={setSearchText}
           metroData={metroData}
           getMetroData={getMetroData}
-          searchMetroCoords={searchMetroCoords}
-          setSearchMetroCoords={setSearchMetroCoords}
         />
       </SearchListContainer>
 
