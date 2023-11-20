@@ -31,14 +31,18 @@ export default function Tutorial() {
         <TutorialTitle>위치 정보 수집을 위한 권한 요청</TutorialTitle>
 
         <TutorialDescription>
-          내리세요 앱의 필수 기능을 위해 귀하의 위치 정보를 수집합니다.
+          내리세요 앱의 필수 기능을 위해 위치 정보 수집에 동의해주세요.
+        </TutorialDescription>
+        <TutorialDescription>
+          앱이 잠금 상태이거나 미사용 중에도 귀하의 위치 정보를 수집할 수
+          있습니다.
         </TutorialDescription>
       </View>
 
       <MapAnimation />
 
       <Button onPress={handleAgreePress}>
-        <ButtonText>위치 정보 수집에 동의합니다.</ButtonText>
+        <ButtonText>위치 정보 수집에 동의합니다</ButtonText>
       </Button>
     </TutorialContainer>
   );
@@ -60,9 +64,9 @@ const TutorialTitle = styled.Text`
 
 const TutorialDescription = styled.Text`
   font-size: 16px;
-  line-height: 22px;
+  line-height: 28px;
   color: #2d2c2c;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Button = styled.TouchableOpacity`
