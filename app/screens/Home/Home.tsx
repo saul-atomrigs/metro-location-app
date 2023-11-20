@@ -8,12 +8,7 @@ import notifee from '@notifee/react-native';
 import {debounce} from 'lodash';
 
 import type {MetroRowData} from './Home.types';
-import {
-  URL,
-  INITIAL_POSITION,
-  TARGET_LOCATION_DISTANCE,
-  ZERO_COORDS,
-} from './Home.constants';
+import {URL, INITIAL_POSITION, ZERO_COORDS} from './Home.constants';
 import {
   requestGeolocationPermissions,
   targetStation,
@@ -39,19 +34,11 @@ export default function Home() {
   }, []);
 
   /** CONDITIONS */
-  const isTargetedStation =
-    Math.abs(searchMetroCoords.latitude - latitude) <
-      TARGET_LOCATION_DISTANCE &&
-    Math.abs(searchMetroCoords.longitude - longitude) <
-      TARGET_LOCATION_DISTANCE;
-
-  const isTargetedLocation2 = targetStation(
+  const isTargetedStation = targetStation(
     searchMetroCoords,
     latitude,
     longitude,
   );
-
-  console.log(isTargetedStation === isTargetedLocation2);
 
   useEffect(() => {
     if (isTargetedStation) {
