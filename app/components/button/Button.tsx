@@ -17,7 +17,7 @@ export default function ButtonComponent({
 
 const Button = {
   Body: styled.TouchableOpacity<{
-    buttonStyle: 'primary' | 'danger';
+    buttonStyle: 'primary' | 'danger' | 'disabled';
   }>`
     display: flex;
     justify-content: center;
@@ -29,7 +29,11 @@ const Button = {
     width: 90%;
     margin-bottom: 10px;
     background-color: ${({buttonStyle}) =>
-      buttonStyle === 'primary' ? '#190c8d' : '#b50404'};
+      buttonStyle === 'primary'
+        ? '#190c8d'
+        : buttonStyle === 'disabled'
+        ? '#666'
+        : '#b50404'};
     border-radius: 13px;
   `,
 

@@ -1,5 +1,5 @@
 export type ButtonProps = {
   title: string;
   onPress: () => void;
-  buttonStyle: 'primary' | 'danger';
+  buttonStyle: 'primary' | 'danger' | 'disabled';
 };

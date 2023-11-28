@@ -166,7 +166,7 @@ export default function Home() {
       <Button
         onPress={onDisplayNotification}
         title="알림 설정"
-        buttonStyle="primary"
+        buttonStyle={searchText === '' ? 'disabled' : 'primary'}
       />
 
       <Button
