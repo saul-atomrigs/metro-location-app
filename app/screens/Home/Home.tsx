@@ -111,17 +111,17 @@ export default function Home() {
   });
 
   /** 키보드 올라왔을 때 플랫폼 별 UI 대처 */
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
 
-  const {StatusBarManager} = NativeModules;
   useEffect(() => {
     Platform.OS === 'ios'
-      ? StatusBarManager.getHeight(statusBarFrameData => {
-          setStatusBarHeight(statusBarFrameData.height);
-        })
+      ? NativeModules.StatusBarManager.getHeight(
+          (statusBarFrameData: {height: React.SetStateAction<number>}) => {
+            setStatusBarHeight(statusBarFrameData.height);
+          },
+        )
       : null;
   }, []);
-
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
 
   /** UI */
 
