@@ -40,8 +40,11 @@ export default function Home() {
     longitude,
   );
 
+  const [isNotifeeActive, setIsNotifeeActive] = useState(false);
+
   useEffect(() => {
     if (isTargetedStation) {
+      setIsNotifeeActive(false);
       onDisplayNotification();
     }
   }, [isTargetedStation]);
@@ -75,6 +78,7 @@ export default function Home() {
       if (Platform.OS === 'ios') {
         await notifee.requestPermission();
       }
+      setIsNotifeeActive(true);
       displayNotifee('지하철 앱', '내리세요 서비스를 시작합니다');
     } catch (error: any) {
       console.warn('error', error);
@@ -86,6 +90,7 @@ export default function Home() {
     try {
       await notifee.stopForegroundService();
       Geolocation.stopObserving(); // 대체: Geolocation.clearWatch(watchId)
+      setIsNotifeeActive(false);
     } catch (error: any) {
       console.warn('error', error);
     }
@@ -172,7 +177,7 @@ export default function Home() {
       <Button
         onPress={stopForegroundService}
         title="알림 해제"
-        buttonStyle="danger"
+        buttonStyle={isNotifeeActive ? 'danger' : 'disabled'}
       />
     </StyledKeyboardAvoidingView>
   );
