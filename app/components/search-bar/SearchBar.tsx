@@ -15,6 +15,7 @@ export default function SearchBarComponent({
     <>
       <SearchBar.Input
         placeholder="하차하실 역을 입력해주세요."
+        placeholderTextColor={'#666'}
         onChangeText={text => {
           setSearchText(text);
           debouncedGetMetroData(text);
@@ -56,6 +57,7 @@ const SearchBar = {
     border-radius: 13px;
     background-color: #fff;
     border: 1px solid #190c8d;
+    color: #0f0f0f;
   `,
   ClearSearch: styled.TouchableOpacity`
     position: absolute;
